@@ -1,0 +1,1 @@
+.env\Scripts\python.exe -m src %1
