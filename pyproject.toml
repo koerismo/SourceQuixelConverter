@@ -1,0 +1,12 @@
+[project]
+name = "sourcequixelconverter"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=1.26.0",
+    "pyinstaller>=6.9.0",
+    "srctools>=2.3.14",
+    "tomlkit>=0.13.0",
+]

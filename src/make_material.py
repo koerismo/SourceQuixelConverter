@@ -1,6 +1,6 @@
 from .lib.pbr.src.module.core.material import Material, MaterialMode, GameTarget, NormalType
-from .lib.pbr.src.module.core.io.image import Image
 from .lib.pbr.src.module.core.texops import normalize
+from .lib.pbr.src.module.core.io.image import Image
 from .lib.pbr.src.module.core.io.imio import ImIOBackend
 from .read_meta import QuixelAsset, QuixelTexture
 from pathlib import Path
@@ -13,15 +13,21 @@ def _load_texture(path: Path, asset: QuixelAsset, tex: str, mode: str|None=None)
 	if not tex_path.exists(): return None
 	return normalize(Image.load(tex_path), mode=mode)
 
-def make_material(path: Path, asset: QuixelAsset, texSize=(2048, 2048)):
+def make_material(path: Path, asset: QuixelAsset, texSize=(2048, 2048), texMode: MaterialMode=MaterialMode.PhongEnvmap):
 	use_envmap = asset.textures["Roughness"].minIntensity < 0.6
+
+	if not use_envmap and texMode == MaterialMode.PhongEnvmap:
+		texMode = MaterialMode.Phong
+
 	TEX_SIZE = texSize
 
 	folder = path.parent
 
 	mat = Material(
-		MaterialMode.PhongEnvmap if use_envmap else MaterialMode.Phong,
-		GameTarget.V2011,
+		# MaterialMode.PhongEnvmap if use_envmap else MaterialMode.Phong,
+		# GameTarget.V2011,
+		texMode,
+		GameTarget.V2023 if MaterialMode.is_pbr(texMode) else GameTarget.V2011,
 		TEX_SIZE,
 		TEX_SIZE,
 		str(Path("models") / asset.materialName),

@@ -10,6 +10,7 @@ from .lib.pbr.src.module.core.vmt import make_vmt
 from .lib.pbr.src.module.core.convert import export as export_material
 from .lib.pbr.src.module.core.material import Material, MaterialMode, GameTarget, NormalType
 
+TEX_MODE = MaterialMode.PBRModel
 TEX_SIZE = (4096, 4096)
 
 #region Init
@@ -74,7 +75,7 @@ for path, asset in found_assets:
 		completed_assets.add(asset.materialName)
 
 		print("\nProcessing material for", asset.name)
-		material = make_material(path, asset, texSize=TEX_SIZE)
+		material = make_material(path, asset, texSize=TEX_SIZE, texMode=TEX_MODE)
 		texlist = export_material(material)
 
 		vmt_path = (GAMEPATH/"materials"/material.name).with_suffix(".vmt")
